@@ -13,14 +13,27 @@ const description = document.getElementById("description")
 const btnSave = document.getElementById("btnSave")
 const divContainerCites = document.querySelector(".container-cites")
 
+
 btnSave.addEventListener('click', function (event) {
     event.preventDefault()
     savePatient()
+})
 
+divContainerCites.addEventListener("click",function (event) {
+    event.preventDefault()
+    if (event.target.classList.contains("edit")) {
+        const id = event.target.parentElement.parentElement.getAttribute("data-id")
+        editCite(id)
+    }
+    if (event.target.classList.contains("delete")) {
+        const id = event.target.parentElement.parentElement.getAttribute("data-id")
+        deleteCite(id)
+    }
 })
 
 function savePatient() {
     const patient = {
+        id:Date.now(),
         namePet: namePet.value,
         namePerson: namePerson.value,
         phoneperson: phoneperson.value,
@@ -42,41 +55,47 @@ function showCites() {
     timeCite.value = ""
     description.value = ""
     quotes.forEach(element => {
-
         divContainerCites.innerHTML += `
         <div class="card card_cite">
-            <div class="card-body">
-            <h5 class="card-title fs-3 fw-bold">${element.namePet}</h5>
-            <p class="card-text">
-            <div class="d-flex gap-2">
-                <span class="fw-bold">Propietario:</span>
-                <span>${element.namePerson}</span>
-            </div>
-            <div class="d-flex gap-2">
-                <span class="fw-bold">Telefono:</span>
-                <span>${element.phoneperson}</span>
-            </div>
-            <div class="d-flex gap-2">
-                <span class="fw-bold">Fecha:</span>
-                <span>${element.dateCite}</span>
-            </div>
+            <div class="card-body" data-id="${element.id}">
+                <h5 class="card-title fs-3 fw-bold">${element.namePet}</h5>
+                <p class="card-text">
+                <div class="d-flex gap-2">
+                    <span class="fw-bold">Propietario:</span>
+                    <span>${element.namePerson}</span>
+                </div>
+                <div class="d-flex gap-2">
+                    <span class="fw-bold">Telefono:</span>
+                    <span>${element.phoneperson}</span>
+                </div>
+                <div class="d-flex gap-2">
+                    <span class="fw-bold">Fecha:</span>
+                    <span>${element.dateCite}</span>
+                </div>
 
-            <div class="d-flex gap-2">
-                <span class="fw-bold">Hora:</span>
-                <span>${element.timeCite}</span>
-            </div>
-            <div class="d-flex gap-2">
-                <span class="fw-bold">Sintomas:</span>
-                <span>${element.description}</span>
-            </div>
-            </p>
-            <div class="d-flex gap-2">
-                <button class="btn btn-primary">Editar</button>
-                <button class="btn btn-danger">Eliminar</button>
-            </div>
+                <div class="d-flex gap-2">
+                    <span class="fw-bold">Hora:</span>
+                    <span>${element.timeCite}</span>
+                </div>
+                <div class="d-flex gap-2">
+                    <span class="fw-bold">Sintomas:</span>
+                    <span>${element.description}</span>
+                </div>
+                </p>
+                <div class="d-flex gap-2">
+                    <button class="btn btn-primary edit">Editar</button>
+                    <button class="btn btn-danger delete">Eliminar</button>
+                </div>
             </div>
         </div>
         `
     });
 }
+
+function deleteCite(id) {
+    quotes = quotes.filter((pacient) => pacient.id != id)
+    showCites()
+}
+
+
 
