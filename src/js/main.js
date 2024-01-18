@@ -3,7 +3,7 @@ import '../scss/style.scss'
 import * as bootstrap from 'bootstrap'
 
 let quotes = []
-
+let pacientFound
 const namePet = document.getElementById("name_pet")
 const namePerson = document.getElementById("name_person")
 const phoneperson = document.getElementById("phone_person")
@@ -19,7 +19,7 @@ btnSave.addEventListener('click', function (event) {
     savePatient()
 })
 
-divContainerCites.addEventListener("click",function (event) {
+divContainerCites.addEventListener("click", function (event) {
     event.preventDefault()
     if (event.target.classList.contains("edit")) {
         const id = event.target.parentElement.parentElement.getAttribute("data-id")
@@ -32,8 +32,8 @@ divContainerCites.addEventListener("click",function (event) {
 })
 
 function savePatient() {
-    const patient = {
-        id:Date.now(),
+    let patient = {
+        id: Date.now(),
         namePet: namePet.value,
         namePerson: namePerson.value,
         phoneperson: phoneperson.value,
@@ -42,8 +42,24 @@ function savePatient() {
         description: description.value,
     }
 
-    quotes.push(patient)
+    if (pacientFound) {
+        quotes.forEach(function (quote) {
+            if (quote.id === pacientFound.id) {
+                quote.namePet = patient.namePet
+                quote.namePerson = patient.namePerson
+                quote.phoneperson = patient.phoneperson
+                quote.dateCite = patient.dateCite
+                quote.timeCite = patient.timeCite
+                quote.description = patient.description
+            }
+        })
+        pacientFound=undefined
+    } else {
+        quotes.push(patient)
+    }
+
     showCites()
+
 }
 
 function showCites() {
@@ -90,6 +106,16 @@ function showCites() {
         </div>
         `
     });
+}
+
+function editCite(id) {
+    pacientFound = quotes.find(element => element.id == id)
+    namePet.value = pacientFound.namePet
+    namePerson.value = pacientFound.namePerson
+    phoneperson.value = pacientFound.phoneperson
+    dateCite.value = pacientFound.dateCite
+    timeCite.value = pacientFound.timeCite
+    description.value = pacientFound.description
 }
 
 function deleteCite(id) {
