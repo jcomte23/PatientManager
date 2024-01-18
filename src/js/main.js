@@ -4,6 +4,13 @@ import * as bootstrap from 'bootstrap'
 
 let quotes = []
 let pacientFound
+
+const quotesCache = localStorage.getItem("quotes")
+if (quotesCache) {
+    quotes = JSON.parse(quotesCache)
+}
+
+
 const namePet = document.getElementById("name_pet")
 const namePerson = document.getElementById("name_person")
 const phoneperson = document.getElementById("phone_person")
@@ -53,11 +60,12 @@ function savePatient() {
                 quote.description = patient.description
             }
         })
-        pacientFound=undefined
+        pacientFound = undefined
     } else {
         quotes.push(patient)
     }
 
+    localStorage.setItem("quotes", JSON.stringify(quotes))
     showCites()
 
 }
@@ -120,8 +128,12 @@ function editCite(id) {
 
 function deleteCite(id) {
     quotes = quotes.filter((pacient) => pacient.id != id)
+    localStorage.setItem("quotes", JSON.stringify(quotes))
     showCites()
 }
+
+showCites()
+
 
 
 
