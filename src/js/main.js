@@ -17,13 +17,15 @@ const phoneperson = document.getElementById("phone_person")
 const dateCite = document.getElementById("date_cite")
 const timeCite = document.getElementById("time_cite")
 const description = document.getElementById("description")
-const btnSave = document.getElementById("btnSave")
+const form = document.getElementById("form")
 const divContainerCites = document.querySelector(".container-cites")
 
 
-btnSave.addEventListener('click', function (event) {
+form.addEventListener('submit', function (event) {
     event.preventDefault()
-    savePatient()
+    if (!form.checkValidity()) {
+        event.preventDefault();
+    }
 })
 
 divContainerCites.addEventListener("click", function (event) {
