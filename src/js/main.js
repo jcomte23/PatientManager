@@ -22,9 +22,11 @@ const divContainerCites = document.querySelector(".container-cites")
 
 
 form.addEventListener('submit', function (event) {
-    event.preventDefault()
     if (!form.checkValidity()) {
         event.preventDefault();
+    }else{
+        event.preventDefault();
+        savePatient()
     }
 })
 
